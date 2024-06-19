@@ -8,4 +8,5 @@ export const CarwashServiceTypeFormValidationSchema = Yup.object({
       const numberValue = Number(value.replace(/,/g, "."));
       return !isNaN(numberValue) && isFinite(numberValue) && numberValue > 0;
     }),
+  description: Yup.string().required("A descrição é obrigatória").trim(),
 });

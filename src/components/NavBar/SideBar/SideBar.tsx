@@ -11,44 +11,29 @@ import {
   Collapse,
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
-import HomeIcon from "@mui/icons-material/Home";
-import SavingsIcon from "@mui/icons-material/Savings";
 import ExpandLess from "@mui/icons-material/ExpandLess";
 import ExpandMore from "@mui/icons-material/ExpandMore";
-import NoteAddIcon from "@mui/icons-material/NoteAdd";
-import ListAltIcon from "@mui/icons-material/ListAlt";
-import EditIcon from "@mui/icons-material/Edit";
-import DeleteIcon from "@mui/icons-material/Delete";
 import { useNavigate } from "react-router-dom";
-import {
-  HOME_ROUTE,
-  SERVICES_CREATE_ROUTE,
-  SERVICES_GET_ROUTE,
-  SERVICES_TYPE_CREATE,
-} from "routes/ConstantsURLRoutes";
-
 interface SidebarProps {
   open: boolean;
   toggleSidebar: () => void;
+  menuItems: {
+    text: string;
+    icon: React.ReactNode;
+    href: string;
+    subItems?: {
+      text: string;
+      icon: React.ReactNode;
+      href: string;
+    }[];
+  }[];
 }
 
-const menuItems = [
-  { text: "Home", href: HOME_ROUTE, icon: <HomeIcon /> },
-  {
-    text: "Serviços",
-    href: "/",
-    icon: <SavingsIcon />,
-    subItems: [
-      { text: "Cadastrar", href: SERVICES_CREATE_ROUTE, icon: <NoteAddIcon /> },
-      { text: "Listar", href: SERVICES_GET_ROUTE, icon: <ListAltIcon /> },
-      { text: "Tipo de serviço", href: SERVICES_TYPE_CREATE, icon: <NoteAddIcon /> },
-      { text: "Editar", href: "/services/edit", icon: <EditIcon /> },
-      { text: "Excluir", href: "/services/delete", icon: <DeleteIcon /> },
-    ],
-  },
-];
-
-export const Sidebar: React.FC<SidebarProps> = ({ open, toggleSidebar }) => {
+export const Sidebar: React.FC<SidebarProps> = ({
+  open,
+  toggleSidebar,
+  menuItems,
+}) => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const isTablet = useMediaQuery(theme.breakpoints.between("sm", "md"));

@@ -151,7 +151,7 @@ const ListCarwashService = () => {
          onPageChange={handleChangePage}
          onRowsPerPageChange={handleChangeRowsPerPage}
          sx={{
-           maxWidth: "100%", // Garante que a paginação se ajuste à largura da tela
+           maxWidth: "100%",
          }}
        />
      </Grid>

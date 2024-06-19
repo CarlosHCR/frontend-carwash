@@ -13,5 +13,4 @@ export const CarwashServiceRegistryFormValidationSchema = Yup.object({
   //   }),
   serviceDate: Yup.date().required("A data do serviço é obrigatória"),
   notes: Yup.string().trim(),
-  hour: Yup.string().required("O horário é obrigatório"),
 });

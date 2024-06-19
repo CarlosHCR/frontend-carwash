@@ -23,3 +23,19 @@ export const getAccessToken = () => {
 export const getRefreshToken = () => {
   return sessionStorage.getItem("refreshToken");
 };
+
+export const isUserRoleStaff = () => {
+  const userString = sessionStorage.getItem("user");
+  const user = userString && JSON.parse(userString);
+  return !!user && (user.role === "staff" || user.role === "admin");
+};
+
+export const isUserRoleClient = () => {
+  const userString = sessionStorage.getItem("user");
+  const user = userString && JSON.parse(userString);
+  return !!user && user.role === "client";
+};
+
+export const authProvider = () => {
+  return !!getAccessToken() || !!getRefreshToken;
+};

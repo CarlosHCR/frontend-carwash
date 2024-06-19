@@ -1,3 +1,5 @@
+import moment from "moment";
+
 export const months = [
   "Janeiro",
   "Fevereiro",
@@ -29,7 +31,10 @@ export const formatDate = (dateString: string) => {
     .toString()
     .padStart(2, "0")}-${date.getFullYear()}`;
 };
-export const formatDateAndTimeISO = (serviceDate: string, serviceHour: string) => {
+export const formatDateAndTimeISO = (
+  serviceDate: string,
+  serviceHour: string
+) => {
   const moment = require("moment");
   const combinedDateTime = moment(
     `${serviceDate} ${serviceHour}`,
@@ -39,13 +44,8 @@ export const formatDateAndTimeISO = (serviceDate: string, serviceHour: string) =
 };
 
 export const formatDateAndTime = (dateString: string) => {
-  const date = new Date(dateString);
-  return `${date.getDate().toString().padStart(2, "0")}-${(date.getMonth() + 1)
-    .toString()
-    .padStart(2, "0")}-${date.getFullYear()} ${date
-    .getHours()
-    .toString()
-    .padStart(2, "0")}:${date.getMinutes().toString().padStart(2, "0")}`;
+  const formattedDate = moment.utc(dateString).format("DD-MM-YYYY HH[h]");
+  return formattedDate;
 };
 
 export const getURLParams = (url: string) => {

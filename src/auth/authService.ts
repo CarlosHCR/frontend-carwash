@@ -132,21 +132,3 @@ export const validationToken = async () => {
 export const logout = () => {
   clearUserSessionStorage();
 };
-
-export const isAuthenticated = async () => {
-  try {
-    await validationToken();
-    return true;
-  } catch (error: any) {
-    if (error.message.includes("401")) {
-      try {
-        await refreshToken();
-        return true;
-      } catch (refreshError) {
-        throw error;
-      }
-    } else {
-      throw error;
-    }
-  }
-};

@@ -8,14 +8,14 @@ export const emailSchema = Yup.string()
   .required("Este campo é obrigatório!")
   .trim();
 
-const passwordRegex =
-  /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&.\\])[A-Za-z\d@$!%*#?&.\\]{8,}$/;
-
 export const passwordSchema = Yup.string()
-  .test(
-    "password",
-    "A senha deve ter pelo menos 8 caracteres, incluir pelo menos uma letra maiúscula, uma letra minúscula, um número e um caractere especial (@$!%*#?&.).",
-    (value: any) => passwordRegex.test(value)
+  .min(8, "A senha deve ter pelo menos 8 caracteres.")
+  .matches(/[a-z]/, "A senha deve conter pelo menos uma letra minúscula.")
+  .matches(/[A-Z]/, "A senha deve conter pelo menos uma letra maiúscula.")
+  .matches(/\d/, "A senha deve conter pelo menos um número.")
+  .matches(
+    /[!@#$%^&*()\-_=+{};:,<.>]/,
+    "A senha deve conter pelo menos um caractere especial (@$!%*#?&.)."
   )
   .required("Este campo é obrigatório!");
 

@@ -1,19 +1,19 @@
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { ErrorModal } from "components/Dialog";
-import { getAccessToken, getRefreshToken } from "auth/tokenService";
 import { LOGIN_ROUTE } from "routes/ConstantsURLRoutes";
 import { LOGIN_IS_REQUIRED } from "validations/messages/Authentication";
+import { authProvider } from "auth/tokenService";
 
 const isAuthenticated = () => {
-  return !!getAccessToken() || !!getRefreshToken();
+  return !!authProvider();
 };
 
-interface WithAuthProps {
+interface IsAuthProps {
   children: React.ReactNode;
 }
 
-const WithAuth: React.FC<WithAuthProps> = ({ children }) => {
+const IsAuth: React.FC<IsAuthProps> = ({ children }) => {
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -35,4 +35,4 @@ const WithAuth: React.FC<WithAuthProps> = ({ children }) => {
   return <>{children}</>;
 };
 
-export default WithAuth;
+export default IsAuth;

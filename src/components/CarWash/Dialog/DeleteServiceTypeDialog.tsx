@@ -11,29 +11,29 @@ import ReportProblemOutlinedIcon from "@mui/icons-material/ReportProblemOutlined
 import { deleteServiceType } from "services/carwashService.service";
 
 interface DeleteServiceTypeModalProps {
-  onClose: (error?: any) => void;
+  onClose: (data: { error?: any; confirmDelete?: boolean }) => void;
   ServiceTypeId: number;
+  open: boolean;
 }
 
 export const DeleteServiceTypeModal: React.FC<DeleteServiceTypeModalProps> = ({
   onClose,
   ServiceTypeId,
+  open,
 }) => {
-  const [open, setOpen] = React.useState(true);
 
   const handleClose = () => {
-    setOpen(false);
-    onClose();
+    onClose({});
   };
 
-  const handleConfirm = async () => {
-    try {
-      await deleteServiceType(ServiceTypeId);
-      onClose();
-    } catch (error: any) {
-      onClose(error);
-    }
-  };
+ const handleConfirm = async () => {
+   try {
+     await deleteServiceType(ServiceTypeId);
+     onClose({ confirmDelete: true }); 
+   } catch (error: any) {
+     onClose({ error });
+   }
+ };
 
   return (
     <Dialog fullWidth maxWidth={"sm"} open={open} onClose={handleClose}>

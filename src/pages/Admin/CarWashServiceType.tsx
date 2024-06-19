@@ -31,12 +31,14 @@ interface CarwashServiceSericeTypeForm {
   id?: number | undefined;
   name: string;
   price: number;
+  description: string;
 }
 
 const initialValues: CarwashServiceSericeTypeForm = {
   id: undefined,
   name: "",
   price: 0,
+  description: "",
 };
 
 const CarwashServiceSericeType: React.FC = () => {
@@ -71,7 +73,8 @@ const CarwashServiceSericeType: React.FC = () => {
         const updatedServiceType = await updateServiceType(
           values.id || 0,
           values.name,
-          values.price
+          values.price,
+          values.description
         );
         setServiceTypes(
           serviceTypes.map((item) =>
@@ -80,7 +83,7 @@ const CarwashServiceSericeType: React.FC = () => {
         );
         setEditingItem(null);
       } else {
-        const newServiceType = await setServiceType(values.name, values.price);
+        const newServiceType = await setServiceType(values.name, values.price, values.description);
         setServiceTypes([...serviceTypes, newServiceType]);
       }
       setSuccess(SERVICE_TYPE_SUCCESSFULLY_CREATE);
@@ -105,16 +108,24 @@ const CarwashServiceSericeType: React.FC = () => {
     setDeleteModalOpen(true);
   };
 
-  const handleCloseDeleteModal = async (error: any = null) => {
+  const handleCloseDeleteModal = async ({
+    error,
+    confirmDelete,
+  }: {
+    error?: any;
+    confirmDelete?: boolean;
+  }) => {
     if (error) {
       setError("Erro ao deletar tipo de serviço: ");
-    } else {
-      if (serviceTypeIdToDelete !== null) {
+    } else if (confirmDelete && serviceTypeIdToDelete !== null) {
+      try {
         const updatedServiceTypes = serviceTypes.filter(
           (serviceType) => serviceType.id !== serviceTypeIdToDelete
         );
         setServiceTypes(updatedServiceTypes);
         setSuccess("Tipo de serviço deletado com sucesso");
+      } catch (error: any) {
+        setError("Erro ao deletar tipo de serviço: ");
       }
     }
     setDeleteModalOpen(false);
@@ -154,6 +165,7 @@ const CarwashServiceSericeType: React.FC = () => {
             <Form>
               <InputField name="name" label="Nome" type="text" />
               <PriceInputWithButtons name="price" label="Preço" type="text" />
+              <InputField name="description" label="Descrição" type="text" />
               <Button
                 type="submit"
                 variant="contained"
@@ -181,6 +193,7 @@ const CarwashServiceSericeType: React.FC = () => {
             <TableRow>
               <TableCell align="center">Nome</TableCell>
               <TableCell align="center">Preço</TableCell>
+              <TableCell align="center">Descrição</TableCell>
               <TableCell align="center"></TableCell>
             </TableRow>
           </TableHead>
@@ -194,6 +207,7 @@ const CarwashServiceSericeType: React.FC = () => {
               >
                 <TableCell align="center">{row.name}</TableCell>
                 <TableCell align="center">{row.price}</TableCell>
+                <TableCell align="center">{row.description}</TableCell>
                 <TableCell align="center">
                   <Button onClick={() => handleEdit(row)}>
                     <EditIcon />
@@ -220,6 +234,7 @@ const CarwashServiceSericeType: React.FC = () => {
       )}
       {deleteModalOpen && serviceTypeIdToDelete && (
         <DeleteServiceTypeModal
+          open={deleteModalOpen}
           onClose={handleCloseDeleteModal}
           ServiceTypeId={serviceTypeIdToDelete}
         />
