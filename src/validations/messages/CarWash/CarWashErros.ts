@@ -7,6 +7,7 @@ import {
   ERROR_PRICE,
   ERROR_UNKNOWN,
   ERROR_SERVICES_NOT_FOUND,
+  ERROR_DATE_INVALID,
 } from "./CarWashErrorMessages";
 
 export const getFormErrorResponse = (error: any): string => {
@@ -25,6 +26,15 @@ export const getFormErrorResponse = (error: any): string => {
   }
   if (error.response?.data?.price) {
     errorMessages.push(ERROR_PRICE);
+  }
+
+  if (error.response.data?.non_field_errors) {
+    if (
+      error.response.data.non_field_errors[0] ===
+      "The date needs to be valid. The service must be scheduled for the future."
+    ) {
+      errorMessages.push(ERROR_DATE_INVALID);
+    }
   }
 
   if (errorMessages.length === 0) {

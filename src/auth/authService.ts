@@ -21,7 +21,7 @@ export const register = async (
   phoneNumber: string
 ) => {
   try {
-    const response = await authApi.post("register", {
+    const response = await authApi.post("register/", {
       username,
       email,
       password1,
@@ -49,7 +49,7 @@ export const confirmEmail = async (key: string) => {
 
 export const resendEmail = async (email: string) => {
   try {
-    const response = await authApi.post("resend-email", {
+    const response = await authApi.post("resend-email/", {
       email,
     });
     return response.data;
@@ -60,7 +60,7 @@ export const resendEmail = async (email: string) => {
 
 export const login = async (username: string, password: string) => {
   try {
-    const response = await authApi.post("login", {
+    const response = await authApi.post("login/", {
       username,
       password,
     });
@@ -73,7 +73,7 @@ export const login = async (username: string, password: string) => {
 
 export const resetPassword = async (email: string) => {
   try {
-    const response = await authApi.post(`password/reset`, {
+    const response = await authApi.post(`password/reset/`, {
       email,
     });
     return response.data;
@@ -107,7 +107,7 @@ export const confirmPasswordReset = async (
 export const refreshToken = async () => {
   const refreshToken = getRefreshToken();
   try {
-    const response = await authApi.post("token/refresh", {
+    const response = await authApi.post("token/refresh/", {
       refresh: refreshToken,
     });
     sessionStorage.setItem("accessToken", response.data.access);
@@ -120,7 +120,7 @@ export const refreshToken = async () => {
 export const validationToken = async () => {
   const accessToken = getAccessToken();
   try {
-    const response = await authApi.post("token/verify", {
+    const response = await authApi.post("token/verify/", {
       token: accessToken,
     });
     return response;
@@ -131,22 +131,4 @@ export const validationToken = async () => {
 
 export const logout = () => {
   clearUserSessionStorage();
-};
-
-export const isAuthenticated = async () => {
-  try {
-    await validationToken();
-    return true;
-  } catch (error: any) {
-    if (error.message.includes("401")) {
-      try {
-        await refreshToken();
-        return true;
-      } catch (refreshError) {
-        throw error;
-      }
-    } else {
-      throw error;
-    }
-  }
 };

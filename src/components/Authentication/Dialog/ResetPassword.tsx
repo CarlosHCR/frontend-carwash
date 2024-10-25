@@ -14,19 +14,16 @@ import CloseIcon from "@mui/icons-material/Close";
 import { Formik, Form } from "formik";
 import InputField from "../TextInputField";
 import { resetPasswordSchema } from "validations/forms/Authentication/ResetPasswordForm";
-import { resendEmail } from "auth/authService";
+import { resetPassword } from "auth/authService";
 import { ErrorModal, SuccessModal } from "components/Dialog";
-import {
-  getResendEmailResponse,
-} from "validations/messages/Authentication/AuthErrors";
+import { getResetPasswordResponse } from "validations/messages/Authentication/AuthErrors";
 import { EMAIL_VERIFICATION_SUCCESS } from "validations/messages/Authentication/AuthSuccess";
 
-interface ResendEmailModalProps {
+interface ResetPasswordModalProps {
   onClose: () => void;
 }
 
-
-const ResendEmailModal: React.FC<ResendEmailModalProps> = ({ onClose }) => {
+const ResetPasswordModal: React.FC<ResetPasswordModalProps> = ({ onClose }) => {
   const [success, setSuccess] = React.useState<string | null>(null);
   const [error, setError] = React.useState<string | null>(null);
 
@@ -34,16 +31,16 @@ const ResendEmailModal: React.FC<ResendEmailModalProps> = ({ onClose }) => {
     onClose();
   };
 
-  const handleSubmit = async (
+  const handlePasswordReset = async (
     values: any,
     actions: { resetForm: () => void; setSubmitting: (arg0: boolean) => void }
   ) => {
     try {
-      await resendEmail(values.email);
+      await resetPassword(values.email);
       setSuccess(EMAIL_VERIFICATION_SUCCESS);
       actions.resetForm();
     } catch (error) {
-      const errorResponse = getResendEmailResponse(error);
+      const errorResponse = getResetPasswordResponse(error);
       setError(errorResponse);
     } finally {
       actions.setSubmitting(false);
@@ -56,7 +53,7 @@ const ResendEmailModal: React.FC<ResendEmailModalProps> = ({ onClose }) => {
         <Grid container alignItems="center" justifyContent="center">
           <Grid item>
             <Typography variant="h4" fontStyle={"bold"} padding={2}>
-              Reenviar Email
+              Redefinir Senha
             </Typography>
           </Grid>
           <Grid item style={{ position: "absolute", right: 8, top: 8 }}>
@@ -74,7 +71,7 @@ const ResendEmailModal: React.FC<ResendEmailModalProps> = ({ onClose }) => {
         <Formik
           initialValues={{ email: "" }}
           validationSchema={resetPasswordSchema}
-          onSubmit={handleSubmit}
+          onSubmit={handlePasswordReset}
         >
           {({ isSubmitting }) => (
             <Form>
@@ -122,4 +119,4 @@ const ResendEmailModal: React.FC<ResendEmailModalProps> = ({ onClose }) => {
   );
 };
 
-export default ResendEmailModal;
+export default ResetPasswordModal;

@@ -14,10 +14,11 @@ import { login } from "auth/authService";
 import { ErrorModal } from "components/Dialog/";
 import { useNavigate } from "react-router-dom";
 import ResetPasswordModal from "components/Authentication/Dialog/ResetPassword";
-import { HOME_ROUTE, REGISTER_ROUTE } from "routes/ConstantsURLRoutes";
+import { REGISTER_ROUTE } from "routes/ConstantsURLRoutes";
 import { getLoginResponse } from "validations/messages/Authentication";
 import ContainerPaper from "components/Authentication/ContainerPaper";
 import ResendEmailModal from "components/Authentication/Dialog/ResendEmail";
+import { RoleRoute } from "hooks/RoleRoute";
 
 interface LoginIUser {
   username: string;
@@ -59,7 +60,7 @@ const Login: React.FC = () => {
     try {
       await login(values.username, values.password);
       actions.resetForm();
-      navigate(HOME_ROUTE);
+      navigate(RoleRoute());
     } catch (error) {
       const errorResponse = getLoginResponse(error);
       setError(errorResponse);
@@ -74,14 +75,7 @@ const Login: React.FC = () => {
         <Typography variant="body2" style={{ marginBottom: 20 }}>
           Realize login para acessar o sistema
         </Typography>
-        <Grid
-          item
-          style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-          }}
-        ></Grid>
+        <Grid item></Grid>
         <Formik
           initialValues={initialValues}
           validationSchema={validationLoginSchema}
@@ -108,11 +102,18 @@ const Login: React.FC = () => {
             </Form>
           )}
         </Formik>
-        <Grid display={"flex"} alignItems={"center"} justifyContent={"center"}>
+        <Grid
+          display={"flex"}
+          alignItems={"center"}
+          justifyContent={"center"}
+          flexDirection={"column"}
+        >
           <Grid item xs={12} md={6}>
             <Link href={REGISTER_ROUTE} underline="hover" variant="subtitle2">
               Ainda não tem uma conta?
             </Link>
+          </Grid>
+          <Grid item xs={12} md={6}>
             <Link
               onClick={openResetPasswordModal}
               underline="hover"
@@ -120,6 +121,8 @@ const Login: React.FC = () => {
             >
               Esqueceu sua senha?
             </Link>
+          </Grid>
+          <Grid item xs={12} md={6}>
             <Link
               onClick={openResendEmailModal}
               underline="hover"
