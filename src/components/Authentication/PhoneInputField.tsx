@@ -1,31 +1,7 @@
 import React, { useState } from "react";
 import { useField } from "formik";
 import TextField from "@mui/material/TextField";
-
-const formatPhoneNumber = (value: string): string => {
-  let numbers = value.replace(/[^\d]/g, "");
-  let formattedNumber = "";
-
-  if (numbers.length > 2) {
-    formattedNumber += `(${numbers.substring(0, 2)})`;
-    numbers = numbers.substring(2);
-  }
-
-  if (numbers.length) {
-    if (numbers.length > 5) {
-      formattedNumber += ` ${numbers.substring(0, 5)}-${numbers.substring(
-        5,
-        9
-      )}`;
-    } else {
-      formattedNumber += ` ${numbers.substring(0, 4)}${
-        numbers.length > 4 ? "-" + numbers.substring(4) : ""
-      }`;
-    }
-  }
-
-  return formattedNumber;
-};
+import { formatPhoneNumber } from "utils/Formats";
 
 interface PhoneInputFieldProps {
   name: string;

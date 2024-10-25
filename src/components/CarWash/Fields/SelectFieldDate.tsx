@@ -7,7 +7,7 @@ import {
   InputLabel,
   FormHelperText,
 } from "@mui/material";
-import moment from "moment";
+import { formatDateAndTime } from "utils";
 
 export interface CustomSelectProps {
   name: string;
@@ -41,9 +41,7 @@ const SelectFieldDate: React.FC<CustomSelectProps> = ({
             value={field.value ? field.value : ""}
           >
             {options.map((dateString, index) => {
-              const formattedDate = moment
-                .utc(dateString)
-                .format("DD-MM-YYYY HH[h]");
+              const formattedDate = formatDateAndTime(dateString);
               return (
                 <MenuItem key={index} value={dateString}>
                   {formattedDate}

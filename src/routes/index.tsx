@@ -6,8 +6,8 @@ import {
   RESET_PASSWORD_ROUTE,
 } from "./ConstantsURLRoutes";
 import React, { Suspense } from "react";
-import LoadingPage from "components/LoadingPage";
 import { LayoutNavBar } from "components/NavBar";
+import PageCircularProgress from "components/ActionsProgress/PageCircularProgress";
 
 const Register = React.lazy(() => import("pages/Register"));
 const Login = React.lazy(() => import("pages/Login"));
@@ -20,7 +20,7 @@ const PrivateRoute = React.lazy(() => import("./PrivateRoute"));
 
 export const AppRoutes = () => {
   return (
-    <Suspense fallback={<LoadingPage />}>
+    <Suspense fallback={<PageCircularProgress />}>
       <Routes>
         <Route path={REGISTER_ROUTE} element={<Register />} />
         <Route path={LOGIN_ROUTE} element={<Login />} />

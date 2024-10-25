@@ -57,7 +57,6 @@ export const updateServiceType = async (
 export const setCarwashServices = async (
   vehicleLicensePlate: string,
   serviceType: string,
-  price: number,
   serviceDate: string,
   notes: string
 ) => {
@@ -65,7 +64,6 @@ export const setCarwashServices = async (
     const response = await api.post("carwashservice/", {
       license_plate_number: vehicleLicensePlate,
       service_type: serviceType,
-      price,
       service_date: serviceDate,
       notes,
     });
@@ -87,7 +85,15 @@ export const getCarwashServicesAll = async () => {
 export const getavailableDates = async () => {
   try {
     const response = await api.post(BASE_URL + "busytimes/");
-    console.log(response.data);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const getLastService = async () => {
+  try {
+    const response = await api.get(BASE_URL + "carwashservice/last-service/");
     return response.data;
   } catch (error) {
     throw error;
