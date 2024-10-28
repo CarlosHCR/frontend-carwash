@@ -65,7 +65,7 @@ export const setCarwashServices = async (
       license_plate_number: vehicleLicensePlate,
       service_type: serviceType,
       service_date: serviceDate,
-      notes,
+      notes : notes,
     });
     return response.data;
   } catch (error) {

@@ -69,7 +69,6 @@ const CarwashServiceRegistry: React.FC = () => {
       await setCarwashServices(
         values.vehicleLicensePlate,
         values.serviceType,
-        values.price,
         formatDateAndTimeISO(values.serviceDate, values.hour),
         values.notes
       );

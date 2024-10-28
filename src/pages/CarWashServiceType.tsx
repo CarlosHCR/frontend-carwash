@@ -31,12 +31,14 @@ interface CarwashServiceSericeTypeForm {
   id?: number | undefined;
   name: string;
   price: number;
+  description?: string | undefined;
 }
 
 const initialValues: CarwashServiceSericeTypeForm = {
   id: undefined,
   name: "",
   price: 0,
+  description: "",
 };
 
 const CarwashServiceSericeType: React.FC = () => {
@@ -71,7 +73,8 @@ const CarwashServiceSericeType: React.FC = () => {
         const updatedServiceType = await updateServiceType(
           values.id || 0,
           values.name,
-          values.price
+          values.price,
+          values.description || ""
         );
         setServiceTypes(
           serviceTypes.map((item) =>
@@ -80,7 +83,11 @@ const CarwashServiceSericeType: React.FC = () => {
         );
         setEditingItem(null);
       } else {
-        const newServiceType = await setServiceType(values.name, values.price);
+        const newServiceType = await setServiceType(
+          values.name,
+          values.price,
+          values.description || ""
+        );
         setServiceTypes([...serviceTypes, newServiceType]);
       }
       setSuccess(SERVICE_TYPE_SUCCESSFULLY_CREATE);
@@ -222,6 +229,7 @@ const CarwashServiceSericeType: React.FC = () => {
         <DeleteServiceTypeModal
           onClose={handleCloseDeleteModal}
           ServiceTypeId={serviceTypeIdToDelete}
+          open={false}
         />
       )}
     </Grid>
