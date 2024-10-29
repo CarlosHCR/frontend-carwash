@@ -1,23 +1,15 @@
 import { createRoot } from "react-dom/client";
 import { ErrorModal } from "./ErrorDialog";
+import { LOGIN_ROUTE } from "routes/ConstantsURLRoutes";
 
-const ForceLogoutDialog = (
-  errorMessage: string,
-  onClose?: () => void,
-  onRedirect?: () => void
-) => {
+const ForceLogoutDialog = (errorMessage: string) => {
   const modalDiv = document.createElement("div");
   document.body.appendChild(modalDiv);
 
   const handleClose = () => {
+    window.location.href = LOGIN_ROUTE;
     root.unmount();
     modalDiv.remove();
-    if (typeof onClose === "function") {
-      onClose();
-    }
-    if (typeof onRedirect === "function") {
-      onRedirect();
-    }
   };
 
   const root = createRoot(modalDiv);
