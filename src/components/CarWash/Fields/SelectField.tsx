@@ -7,11 +7,11 @@ import {
   InputLabel,
   FormHelperText,
 } from "@mui/material";
-
+import { formatToBRL } from "utils/Formats";
 export interface CustomSelectProps {
   name: string;
   label: string;
-  options: Array<{ id: number; name: string }>;
+  options: Array<{ id: number; name: string; price: number }>;
 }
 
 const SelectField: React.FC<CustomSelectProps> = ({ name, label, options }) => {
@@ -31,11 +31,13 @@ const SelectField: React.FC<CustomSelectProps> = ({ name, label, options }) => {
         >
           <InputLabel>{label}</InputLabel>
           <Select {...field} label={label}>
-            {options.map((option) => (
-              <MenuItem key={option.id} value={option.id}>
-                {option.name}
-              </MenuItem>
-            ))}
+            {options.map(
+              (option: { id: number; name: string; price: number }) => (
+                <MenuItem key={option.id} value={option.id}>
+                  {option.name + " " + formatToBRL(option.price)}
+                </MenuItem>
+              )
+            )}
           </Select>
           {meta.touched && meta.error ? (
             <FormHelperText>{meta.error}</FormHelperText>

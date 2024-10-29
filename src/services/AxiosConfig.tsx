@@ -1,4 +1,4 @@
-import { refreshToken } from "auth/authService";
+import { logout, refreshToken } from "auth/authService";
 import { getAccessToken } from "auth/tokenService";
 import axios, {
   AxiosRequestConfig,
@@ -7,13 +7,11 @@ import axios, {
 } from "axios";
 import ForceLogoutDialog from "components/Dialog/ForceLogout";
 import { BASE_URL } from "config";
-import { LOGIN_ROUTE } from "routes/ConstantsURLRoutes";
 import { AUTHENTICATION_ERROR_MESSAGE } from "validations/messages/Authentication";
 
 const redirectToLogin = () => {
-  ForceLogoutDialog(AUTHENTICATION_ERROR_MESSAGE, undefined, () => {
-    window.location.href = LOGIN_ROUTE;
-  });
+  logout();
+  ForceLogoutDialog(AUTHENTICATION_ERROR_MESSAGE);
 };
 
 const api = axios.create({
@@ -41,6 +39,10 @@ api.interceptors.response.use(
     const originalRequest = error.config as AxiosRequestConfig & {
       _retry?: boolean;
     };
+
+    if (error.response?.status === 403) {
+      redirectToLogin();
+    }
 
     if (error.response?.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true;

@@ -83,14 +83,20 @@ const CarwashServiceSericeType: React.FC = () => {
         );
         setEditingItem(null);
       } else {
-        const newServiceType = await setServiceType(values.name, values.price, values.description);
+        const newServiceType = await setServiceType(
+          values.name,
+          values.price,
+          values.description
+        );
         setServiceTypes([...serviceTypes, newServiceType]);
       }
       setSuccess(SERVICE_TYPE_SUCCESSFULLY_CREATE);
       actions.resetForm();
     } catch (error: any) {
       if (editingItem) {
-        setError("Erro ao atualizar tipo de serviço");
+        if (error.response?.status !== 403) {
+          setError("Erro ao atualizar tipo de serviço");
+        }
       } else {
         setError("Erro ao cadastrar tipo de serviço");
       }
@@ -115,8 +121,9 @@ const CarwashServiceSericeType: React.FC = () => {
     error?: any;
     confirmDelete?: boolean;
   }) => {
-    if (error) {
-      setError("Erro ao deletar tipo de serviço: ");
+    if (error.response?.status === 403) {
+    } else if (error) {
+      setError("Erro ao deletar tipo de serviço");
     } else if (confirmDelete && serviceTypeIdToDelete !== null) {
       try {
         const updatedServiceTypes = serviceTypes.filter(
@@ -125,7 +132,7 @@ const CarwashServiceSericeType: React.FC = () => {
         setServiceTypes(updatedServiceTypes);
         setSuccess("Tipo de serviço deletado com sucesso");
       } catch (error: any) {
-        setError("Erro ao deletar tipo de serviço: ");
+        setError("Erro ao deletar tipo de serviço");
       }
     }
     setDeleteModalOpen(false);
