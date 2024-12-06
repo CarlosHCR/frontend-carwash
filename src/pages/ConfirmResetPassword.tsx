@@ -13,34 +13,24 @@ import ResetPasswordModal from "components/Authentication/Dialog/ResetPassword";
 import { PASSWORD_SUCCESSFULLY_RESET } from "validations/messages/Authentication/AuthSuccess";
 import { ValidationConfirmResetPasswordSchema } from "validations/forms/Authentication";
 
-const ConfirmResetPasswordValues: ConfirmResetPasswordProps = {
-  newPassword: "",
-  newPassword2: "",
-};
-
-interface ConfirmResetPasswordProps {
+interface FormValues {
   newPassword: string;
   newPassword2: string;
 }
 
 const ConfirmResetPassword: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
-  const [success, setSuccess] = React.useState<string | null>(null);
+  const [success, setSuccess] = useState<string | null>(null);
   const navigate = useNavigate();
   const [isResetPasswordModalOpen, setIsResetPasswordModalOpen] =
     useState(false);
 
-  const openResetPasswordModal = () => {
-    setIsResetPasswordModalOpen(true);
-  };
-
-  const closeResetPasswordModal = () => {
-    setIsResetPasswordModalOpen(false);
-  };
-
   const handleSubmit = async (
-    values: ConfirmResetPasswordProps,
-    actions: { resetForm: () => void; setSubmitting: (arg0: boolean) => void }
+    values: FormValues,
+    actions: {
+      resetForm: () => void;
+      setSubmitting: (isSubmitting: boolean) => void;
+    }
   ) => {
     try {
       const { UID, TOKEN } = getURLParams(window.location.href);
@@ -53,7 +43,9 @@ const ConfirmResetPassword: React.FC = () => {
       actions.resetForm();
       setSuccess(PASSWORD_SUCCESSFULLY_RESET);
     } catch (error) {
-      const errorResponse = getConfirmeResetPasswordResponse(error);
+      const errorResponse =
+        getConfirmeResetPasswordResponse(error) ||
+        "Erro inesperado. Tente novamente.";
       setError(errorResponse);
     } finally {
       actions.setSubmitting(false);
@@ -64,11 +56,11 @@ const ConfirmResetPassword: React.FC = () => {
     <>
       <ContainerPaper>
         <Typography variant="h4">Redefinir senha</Typography>
-        <Typography variant="body2" style={{ marginBottom: 20 }}>
+        <Typography variant="body2" sx={{ marginBottom: 2 }}>
           Para redefinir a senha, preencha os campos abaixo.
         </Typography>
         <Formik
-          initialValues={ConfirmResetPasswordValues}
+          initialValues={{ newPassword: "", newPassword2: "" }}
           validationSchema={ValidationConfirmResetPasswordSchema}
           onSubmit={handleSubmit}
         >
@@ -81,7 +73,7 @@ const ConfirmResetPassword: React.FC = () => {
               />
               <PasswordInputField
                 name="newPassword2"
-                label="Senha"
+                label="Confirmar senha"
                 type="password"
               />
               <Button
@@ -90,15 +82,15 @@ const ConfirmResetPassword: React.FC = () => {
                 color="primary"
                 disabled={isSubmitting}
                 startIcon={isSubmitting && <CircularProgress size={20} />}
-                style={{ marginTop: 20 }}
+                sx={{ mt: 2 }}
               >
-                {isSubmitting ? "Enviando..." : "Enviar"}
+                Redefinir
               </Button>
             </Form>
           )}
         </Formik>
         <Link
-          onClick={openResetPasswordModal}
+          onClick={() => setIsResetPasswordModalOpen(true)}
           underline="hover"
           variant="subtitle2"
         >
@@ -112,7 +104,9 @@ const ConfirmResetPassword: React.FC = () => {
         <ErrorModal errorMessage={error} onClose={() => setError(null)} />
       )}
       {isResetPasswordModalOpen && (
-        <ResetPasswordModal onClose={closeResetPasswordModal} />
+        <ResetPasswordModal
+          onClose={() => setIsResetPasswordModalOpen(false)}
+        />
       )}
     </>
   );
