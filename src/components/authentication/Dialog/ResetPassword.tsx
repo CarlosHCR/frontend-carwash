@@ -17,7 +17,7 @@ import { resetPasswordSchema } from "validations/forms/Authentication/ResetPassw
 import { resetPassword } from "auth/authService";
 import { ErrorModal, SuccessModal } from "components/Dialog";
 import { getResetPasswordResponse } from "validations/messages/Authentication/AuthErrors";
-import { EMAIL_VERIFICATION_SUCCESS } from "validations/messages/Authentication/AuthSuccess";
+import { EMAIL_SUCCESSFULLY_SENT } from "validations/messages/Authentication/AuthSuccess";
 
 interface ResetPasswordModalProps {
   onClose: () => void;
@@ -37,7 +37,7 @@ const ResetPasswordModal: React.FC<ResetPasswordModalProps> = ({ onClose }) => {
   ) => {
     try {
       await resetPassword(values.email);
-      setSuccess(EMAIL_VERIFICATION_SUCCESS);
+      setSuccess(EMAIL_SUCCESSFULLY_SENT);
       actions.resetForm();
     } catch (error) {
       const errorResponse = getResetPasswordResponse(error);
