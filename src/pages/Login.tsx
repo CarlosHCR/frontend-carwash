@@ -19,6 +19,7 @@ import { getLoginResponse } from "validations/messages/Authentication";
 import ContainerPaper from "components/Authentication/ContainerPaper";
 import ResendEmailModal from "components/Authentication/Dialog/ResendEmail";
 import { RoleRoute } from "hooks/RoleRoute";
+import styles from "styles/AuthPages/Login.module.css";
 
 interface LoginIUser {
   username: string;
@@ -75,7 +76,6 @@ const Login: React.FC = () => {
         <Typography variant="body2" style={{ marginBottom: 20 }}>
           Realize login para acessar o sistema
         </Typography>
-        <Grid item></Grid>
         <Formik
           initialValues={initialValues}
           validationSchema={validationLoginSchema}
@@ -102,12 +102,7 @@ const Login: React.FC = () => {
             </Form>
           )}
         </Formik>
-        <Grid
-          display={"flex"}
-          alignItems={"center"}
-          justifyContent={"center"}
-          flexDirection={"column"}
-        >
+        <Grid className={styles.containerLinks}>
           <Grid item xs={12} md={6}>
             <Link href={REGISTER_ROUTE} underline="hover" variant="subtitle2">
               Ainda não tem uma conta?
