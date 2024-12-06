@@ -16,15 +16,12 @@ import InputField from "../TextInputField";
 import { resetPasswordSchema } from "validations/forms/Authentication/ResetPasswordForm";
 import { resendEmail } from "auth/authService";
 import { ErrorModal, SuccessModal } from "components/Dialog";
-import {
-  getResendEmailResponse,
-} from "validations/messages/Authentication/AuthErrors";
+import { getResendEmailResponse } from "validations/messages/Authentication/AuthErrors";
 import { EMAIL_VERIFICATION_SUCCESS } from "validations/messages/Authentication/AuthSuccess";
 
 interface ResendEmailModalProps {
   onClose: () => void;
 }
-
 
 const ResendEmailModal: React.FC<ResendEmailModalProps> = ({ onClose }) => {
   const [success, setSuccess] = React.useState<string | null>(null);
