@@ -1,0 +1,12 @@
+.cardStyle {
+  display: flex;
+  height: 100%;
+  flex-direction: column;
+  justify-content: space-between;
+  background-color: #f5f5f5;
+}
+
+.cardActionStyle {
+  display: flex;
+  justify-content: center;
+}
