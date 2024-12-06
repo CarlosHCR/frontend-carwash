@@ -20,7 +20,6 @@ export const PhoneInputField: React.FC<PhoneInputFieldProps> = ({
     helpers.setValue(rawValue);
     event.target.value = formattedValue;
   };
-
   return (
     <TextField
       {...field}
