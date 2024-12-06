@@ -16,6 +16,11 @@ export const clearUserSessionStorage = () => {
   sessionStorage.removeItem("refreshToken");
 };
 
+export const getUser = () => {
+  const userString = sessionStorage.getItem("user");
+  return userString && JSON.parse(userString);
+};
+
 export const getAccessToken = () => {
   return sessionStorage.getItem("accessToken");
 };
