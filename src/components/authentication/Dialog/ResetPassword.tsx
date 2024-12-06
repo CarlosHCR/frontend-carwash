@@ -30,7 +30,6 @@ const ResetPasswordModal: React.FC<ResetPasswordModalProps> = ({ onClose }) => {
   const handleClose = () => {
     onClose();
   };
-
   const handlePasswordReset = async (
     values: any,
     actions: { resetForm: () => void; setSubmitting: (arg0: boolean) => void }
